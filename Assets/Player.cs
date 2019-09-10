@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
 	//public AimPivot aimPivot;
 	public GameObject chargePivot;
 	public Ball volleyBall;
+	public GameObject aimPivot;
 
 	private bool charging = false;
 
@@ -47,18 +48,20 @@ public class Player : MonoBehaviour
 		////AIM ROTATION CONTROL
 		//Aim rotation values
 		float smooth = 5.0f;
-		float tiltAngle = 500.0f;
-		GameObject aimObject = this.gameObject.transform.GetChild(0).GetChild(0).gameObject;
+		float tiltAngle = 20.0f;
+		//GameObject aimObject = this.gameObject.transform.GetChild(0).GetChild(0).gameObject;
 
-		if (Input.GetAxis("Mouse ScrollWheel"){
+		if (Input.GetAxis("Mouse ScrollWheel") != 0){
 
+			float tiltAroundX = Input.GetAxis("Mouse ScrollWheel") * tiltAngle;
+			aimPivot.transform.rotation = Quaternion.Euler(tiltAroundX + aimPivot.transform.eulerAngles.x, -180, 0);
 		}
 		// Smoothly tilts a transform towards a target rotation.
-		float tiltAroundX = Input.GetAxis("Mouse ScrollWheel") * tiltAngle;
+		//float tiltAroundX = Input.GetAxis("Mouse ScrollWheel") * tiltAngle;
 		// Rotate the cube by converting the angles into a quaternion.
-		Quaternion target = Quaternion.Euler(tiltAroundX + aimObject.transform.eulerAngles.x, 0, 0);
+		//Quaternion target = Quaternion.Euler(tiltAroundX + aimObject.transform.eulerAngles.x, 0, 0);
 		// Dampen towards the target rotation
-		aimObject.transform.rotation = Quaternion.Slerp(aimObject.transform.rotation, target, Time.deltaTime * smooth);
+		//aimObject.transform.rotation = Quaternion.Slerp(aimObject.transform.rotation, target, Time.deltaTime * smooth);
 
 		////CHARGE STRIKE CONTROL
 		//Strike power is determined by the Y scale of the aimObject. The Power varies between 0 and 1.
@@ -89,7 +92,7 @@ public class Player : MonoBehaviour
 			chargePivot.transform.localScale = new Vector3(transform.localScale.x, 1, transform.localScale.z);
 
 			//hit volleyball
-			Vector3 strikeAngle = aimObject.transform.rotation.eulerAngles;
+			Vector3 strikeAngle = aimPivot.transform.localRotation.eulerAngles;
 			float powerLevel = transform.localScale.y;
 			volleyBall.StrikeBall(strikeAngle, powerLevel);
 		}

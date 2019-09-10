@@ -35,7 +35,7 @@ public class Ball : MonoBehaviour
         //aimRotation.Normalize();
          
 
-        rb.AddForce(transform.forward * powerLevel*10);
+        rb.AddForce(transform.forward * powerLevel*200);
 
         //rb.AddForce(aimRotation * powerLevel, ForceMode.Impulse);
     }
