@@ -20,10 +20,6 @@ public class Ball : MonoBehaviour
 
     public void StrikeBall(Vector3 aimRotation, float powerLevel)
     {
-        Vector3 dir = Vector3.zero - aimRotation;
-        dir.Normalize();
-
-
         rb.velocity = new Vector3(0,0,0); //freeze ball before striking
         transform.rotation = Quaternion.Euler(aimRotation);
 
@@ -31,12 +27,8 @@ public class Ball : MonoBehaviour
         Debug.Log("powerLevel: " + powerLevel);
         Debug.Log("aimRotation: " + aimRotation);
         Debug.Log("ballRotation: " + transform.rotation.eulerAngles);
-
-        //aimRotation.Normalize();
          
 
-        rb.AddForce(transform.forward * powerLevel*200);
-
-        //rb.AddForce(aimRotation * powerLevel, ForceMode.Impulse);
+        rb.AddForce(transform.forward * powerLevel);
     }
 }

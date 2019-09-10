@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 
 	public float moveSpeed = 1f;
 	public float chargeSpeed = .1f;
+	public float strikeForce = 500f;
 
 	//public AimPivot aimPivot;
 	public GameObject chargePivot;
@@ -69,32 +70,33 @@ public class Player : MonoBehaviour
 		{
 			if (!charging)
 			{
-				chargePivot.transform.localScale = new Vector3(transform.localScale.x, 0, transform.localScale.z);
+				chargePivot.transform.localScale = new Vector3(chargePivot.transform.localScale.x, 0, chargePivot.transform.localScale.z);
 				charging = true;
 			}
 			else
 			{
-				float newYScale = transform.localScale.y + chargeSpeed;//FILLS WAY TOO FAST
+				float newYScale = chargePivot.transform.localScale.y + chargeSpeed;//FILLS WAY TOO FAST
 				if (newYScale > 1f)
 				{
 					newYScale = 1f;//clamp
 				}
 				//temporarily made this y = 5 since newYscale needs debugging
-				chargePivot.transform.localScale = new Vector3(transform.localScale.x, 5, transform.localScale.z);
+				chargePivot.transform.localScale = new Vector3(chargePivot.transform.localScale.x, newYScale, chargePivot.transform.localScale.z);
 
 			}
 
 		}
 		else if (charging && !Input.GetButton("Fire1"))
 		{
-			//reset charge bar
-			charging = false;
-			chargePivot.transform.localScale = new Vector3(transform.localScale.x, 1, transform.localScale.z);
 
 			//hit volleyball
 			Vector3 strikeAngle = aimPivot.transform.localRotation.eulerAngles;
-			float powerLevel = transform.localScale.y;
-			volleyBall.StrikeBall(strikeAngle, powerLevel);
+			float powerLevel = chargePivot.transform.localScale.y;
+			volleyBall.StrikeBall(strikeAngle, powerLevel*strikeForce);
+
+			//reset charge bar
+			charging = false;
+			chargePivot.transform.localScale = new Vector3(transform.localScale.x, 1, transform.localScale.z);
 		}
 
 	}
