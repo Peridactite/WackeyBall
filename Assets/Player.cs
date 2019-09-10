@@ -49,6 +49,10 @@ public class Player : MonoBehaviour
 		float smooth = 5.0f;
 		float tiltAngle = 500.0f;
 		GameObject aimObject = this.gameObject.transform.GetChild(0).GetChild(0).gameObject;
+
+		if (Input.GetAxis("Mouse ScrollWheel"){
+
+		}
 		// Smoothly tilts a transform towards a target rotation.
 		float tiltAroundX = Input.GetAxis("Mouse ScrollWheel") * tiltAngle;
 		// Rotate the cube by converting the angles into a quaternion.
