@@ -7,10 +7,11 @@ public class Player : MonoBehaviour
 
 	public float moveSpeed = 1f;
 	public float chargeSpeed = .1f;
-	public float strikeForce = 500f;
+    public float strikeForce = 500f;
+    public float strikeRange = 4f;
 
-	//public AimPivot aimPivot;
-	public GameObject chargePivot;
+    //public AimPivot aimPivot;
+    public GameObject chargePivot;
 	public Ball volleyBall;
 	public GameObject aimPivot;
 
@@ -92,7 +93,12 @@ public class Player : MonoBehaviour
 			//hit volleyball
 			Vector3 strikeAngle = aimPivot.transform.localRotation.eulerAngles;
 			float powerLevel = chargePivot.transform.localScale.y;
-			volleyBall.StrikeBall(strikeAngle, powerLevel*strikeForce);
+            float distanceToBall = Vector3.Distance(volleyBall.transform.position, transform.position);
+            Debug.Log("Distance to ball: " + distanceToBall);
+            if(distanceToBall < strikeRange)
+            {
+                volleyBall.StrikeBall(strikeAngle, powerLevel * strikeForce);
+            }
 
 			//reset charge bar
 			charging = false;
