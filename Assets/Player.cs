@@ -5,10 +5,15 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
-	public float moveSpeed = 1f;
-	public float chargeSpeed = .1f;
-    public float strikeForce = 500f;
-    public float strikeRange = 4f;
+    //public float moveSpeed = 1f;
+    //public float chargeSpeed = .1f;
+    //public float strikeForce = .01f;
+    //public float strikeRange = 4f;
+
+    public float moveSpeed;
+    public float chargeSpeed;
+    public float strikeForce;
+    public float strikeRange;
 
     //public AimPivot aimPivot;
     public GameObject chargePivot;
@@ -93,17 +98,50 @@ public class Player : MonoBehaviour
 			//hit volleyball
 			Vector3 strikeAngle = aimPivot.transform.localRotation.eulerAngles;
 			float powerLevel = chargePivot.transform.localScale.y;
+            Debug.Log("Y scale (powerlevel): " + powerLevel);
             float distanceToBall = Vector3.Distance(volleyBall.transform.position, transform.position);
-            Debug.Log("Distance to ball: " + distanceToBall);
+            //Debug.Log("Distance to ball: " + distanceToBall);
             if(distanceToBall < strikeRange)
             {
-                volleyBall.StrikeBall(strikeAngle, powerLevel * strikeForce);
+                powerLevel *= strikeForce;
+                volleyBall.StrikeBall(strikeAngle, powerLevel);
             }
 
-			//reset charge bar
-			charging = false;
+
+            //reset charge bar
+            charging = false;
 			chargePivot.transform.localScale = new Vector3(transform.localScale.x, 1, transform.localScale.z);
 		}
 
-	}
+    }
+
+
+    //TRAJECTORY https://answers.unity.com/questions/296749/display-arc-for-cannons-ball-trajectory.html
+
+    public Vector3 PlotTrajectoryAtTime(Vector3 start, Vector3 startVelocity, float time)
+    {
+        return start + startVelocity * time + Physics.gravity * time * time * 0.5f;
+    }
+
+    //TRAJECTORY https://answers.unity.com/questions/296749/display-arc-for-cannons-ball-trajectory.html
+    //This does not help with predicting trajectory, only plotting old trajectory
+    public void PlotTrajectory(Vector3 start, Vector3 startVelocity, float timestep, float maxTime)
+    {
+        Debug.Log("Start: " + start);
+        Debug.Log("Start Velocity: " + startVelocity);
+        Debug.Log("timestep: " + timestep);
+        Debug.Log("maxTime: " + maxTime);
+        Vector3 prev = start;
+        for (int i = 1; ; i++)
+        {
+            float t = timestep * i;
+            if (t > maxTime) break;
+            Vector3 pos = PlotTrajectoryAtTime(start, startVelocity, t);
+            if (Physics.Linecast(prev, pos)) break;
+            Debug.Log("prev: " + prev);
+            Debug.Log("pos: " + pos);
+            Debug.DrawLine(prev, pos, Color.red, 100f);
+            prev = pos;
+        }
+    }
 }
