@@ -111,7 +111,8 @@ public class Player : MonoBehaviour
             //reset charge bar
             charging = false;
 			chargePivot.transform.localScale = new Vector3(transform.localScale.x, 1, transform.localScale.z);
-		}
+        }
+        //PlotTrajectory(volleyBall.transform.position, volleyBall.getVelocity(), Time.fixedDeltaTime, Time.maximumDeltaTime);
 
     }
 
