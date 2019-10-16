@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     public GameObject chargePivot;
 	public Ball volleyBall;
 	public GameObject aimPivot;
+    public GameObject Enemy;
 
 	private bool charging = false;
 
