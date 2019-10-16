@@ -7,6 +7,11 @@ public class Ball : MonoBehaviour
 {
     public Rigidbody rb;
     public Vector3 currentVelocity;
+    public Player player;
+    public Enemy enemy;
+
+    [SerializeField]private Vector3 playerStart;
+    [SerializeField]private Vector3 enemyStart;
 
     // Start is called before the first frame update
     void Start()
@@ -39,5 +44,21 @@ public class Ball : MonoBehaviour
     public Vector3 getVelocity()
     {
         return rb.velocity;
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "PlayerFloor")
+        {
+            transform.position = enemyStart;
+            enemy.resetPosition();
+            player.resetPosition();
+        }
+        if(other.tag == "EnemyFloor")
+        {
+            transform.position = playerStart;
+            enemy.resetPosition();
+            player.resetPosition();
+        }
     }
 }

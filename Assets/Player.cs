@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     //public float strikeForce = .01f;
     //public float strikeRange = 4f;
 
+    [SerializeField]private Vector3 defaultPosition;
     public float moveSpeed;
     public float chargeSpeed;
     public float strikeForce;
@@ -144,5 +145,11 @@ public class Player : MonoBehaviour
             Debug.DrawLine(prev, pos, Color.red, 100f);
             prev = pos;
         }
+    }
+
+
+    public void resetPosition()
+    {
+        transform.position = defaultPosition;
     }
 }
