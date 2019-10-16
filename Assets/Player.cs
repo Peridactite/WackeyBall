@@ -112,7 +112,7 @@ public class Player : MonoBehaviour
             charging = false;
 			chargePivot.transform.localScale = new Vector3(transform.localScale.x, 1, transform.localScale.z);
         }
-        //PlotTrajectory(volleyBall.transform.position, volleyBall.getVelocity(), Time.fixedDeltaTime, Time.maximumDeltaTime);
+        PlotTrajectory(volleyBall.transform.position, volleyBall.getVelocity(), Time.fixedDeltaTime, Time.maximumDeltaTime);
 
     }
 
