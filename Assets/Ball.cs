@@ -7,7 +7,7 @@ public class Ball : MonoBehaviour
 {
     public Rigidbody rb;
     public Vector3 currentVelocity;
-    public EnemyScript enemy;
+    public enemy enemy;
 
     // Start is called before the first frame update
     void Start()
