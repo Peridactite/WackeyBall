@@ -7,6 +7,7 @@ public class Ball : MonoBehaviour
 {
     public Rigidbody rb;
     public Vector3 currentVelocity;
+    public EnemyScript enemy;
 
     // Start is called before the first frame update
     void Start()
@@ -31,7 +32,7 @@ public class Ball : MonoBehaviour
         Debug.Log("aimRotation: " + aimRotation);
         Debug.Log("ballRotation: " + transform.rotation.eulerAngles);
 
-        
+        enemy.TransferInfo(aimRotation.x, transform.forward * powerLevel);
         rb.AddForce(transform.forward * powerLevel, ForceMode.Impulse);
         //rb.AddForce(transform.forward * powerLevel);
     }
