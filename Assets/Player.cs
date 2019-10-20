@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
+    [SerializeField] private Renderer rangeIndicator;
     //public float moveSpeed = 1f;
     //public float chargeSpeed = .1f;
     //public float strikeForce = .01f;
@@ -20,11 +20,14 @@ public class Player : MonoBehaviour
 	public Ball volleyBall;
 	public GameObject aimPivot;
     public GameObject Enemy;
+    public Material rangeTrue;
+    public Material rangeFalse;
 
 	private bool charging = false;
+    private float distanceToBall = 0;
 
-	// Start is called before the first frame update
-	void Start()
+    // Start is called before the first frame update
+    void Start()
     {
         
     }
@@ -39,9 +42,9 @@ public class Player : MonoBehaviour
 		var scrollInput = Input.GetAxis("Mouse ScrollWheel");
 		if (scrollInput > 0f)
 		{
-			// scroll up
+            // scroll up
 
-		}
+        }
 		else if (scrollInput < 0f)
 		{
 			// scroll down
@@ -57,7 +60,19 @@ public class Player : MonoBehaviour
 		//Aim rotation values
 		float smooth = 5.0f;
 		float tiltAngle = 20.0f;
-		//GameObject aimObject = this.gameObject.transform.GetChild(0).GetChild(0).gameObject;
+        //GameObject aimObject = this.gameObject.transform.GetChild(0).GetChild(0).gameObject;
+        distanceToBall = Vector3.Distance(volleyBall.transform.position, transform.position);
+
+        if (distanceToBall < strikeRange)
+        {
+            //turn on indicator
+            rangeIndicator.material = rangeTrue;
+        }
+        else
+        {
+            //turn off indicator
+            rangeIndicator.material = rangeFalse;
+        }
 
 		if (Input.GetAxis("Mouse ScrollWheel") != 0){
 
@@ -99,8 +114,8 @@ public class Player : MonoBehaviour
 			//hit volleyball
 			Vector3 strikeAngle = aimPivot.transform.localRotation.eulerAngles;
 			float powerLevel = chargePivot.transform.localScale.y;
-            Debug.Log("Y scale (powerlevel): " + powerLevel);
-            float distanceToBall = Vector3.Distance(volleyBall.transform.position, transform.position);
+            //Debug.Log("Y scale (powerlevel): " + powerLevel);
+            //distanceToBall = Vector3.Distance(volleyBall.transform.position, transform.position);
             //Debug.Log("Distance to ball: " + distanceToBall);
             if(distanceToBall < strikeRange)
             {
