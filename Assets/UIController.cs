@@ -51,7 +51,7 @@ public class UIController : MonoBehaviour
         if (timer >= 0.0f && canCount)
         {
             timer -= Time.deltaTime;
-            timerText.text = timer.ToString("F");
+            timerText.text = ((int)timer/60).ToString() + ":" + (timer%60).ToString();
         }
 
         else if(timer <= 0.0f && !doOnce)
