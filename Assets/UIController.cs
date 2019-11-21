@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour
 {
@@ -60,6 +61,7 @@ public class UIController : MonoBehaviour
             doOnce = true;
             timerText.text = "0:00";
             currentAnnouncment = announcements.playerWon;
+            SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 }

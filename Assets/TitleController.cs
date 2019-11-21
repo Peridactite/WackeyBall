@@ -7,10 +7,15 @@ using UnityEngine.SceneManagement;
 public class TitleController : MonoBehaviour
 {
     [SerializeField] private Button startButton;
+    [SerializeField] private Button instructButton;
+
+    [SerializeField] private GameObject instructCanvas;
+    [SerializeField] private GameObject titleCanvas;
     // Start is called before the first frame update
     void Start()
     {
         startButton.onClick.AddListener(startClicked);
+        instructButton.onClick.AddListener(instructClicked);
     }
 
     // Update is called once per frame
@@ -22,7 +27,14 @@ public class TitleController : MonoBehaviour
     void startClicked()
     {
         Debug.Log("Start clicked");
-        SceneManager.LoadSceneAsync(1, LoadSceneMode.Additive);
+        SceneManager.LoadSceneAsync(1, LoadSceneMode.Single);
         SceneManager.SetActiveScene(SceneManager.GetSceneByBuildIndex(1));
+    }
+
+    void instructClicked()
+    {
+        Debug.Log("Instruct Clicked");
+        instructCanvas.SetActive(true);
+        titleCanvas.SetActive(false);
     }
 }
