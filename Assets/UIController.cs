@@ -64,4 +64,14 @@ public class UIController : MonoBehaviour
             SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
+
+    public void AddPlayer()
+    {
+        playerScore++;
+    }
+
+    public void AddEnemy()
+    {
+        enemyScore++;
+    }
 }

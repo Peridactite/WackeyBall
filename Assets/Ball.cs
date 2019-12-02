@@ -8,6 +8,7 @@ public class Ball : MonoBehaviour
     [SerializeField] Transform shadow;
     [SerializeField] Transform enemy1;
     [SerializeField] Transform player1;
+    [SerializeField] UIController uiCont;
     public Rigidbody rb;
     public Vector3 currentVelocity;
     public enemy enemy;
@@ -86,10 +87,12 @@ public class Ball : MonoBehaviour
                     if (teamHit == 1)
                     {
                         enemyPoint = true;
+                        uiCont.AddEnemy();
                     }
                     else
                     {
                         playerPoint = true;
+                        uiCont.AddPlayer();
                     }
                     Debug.Log(" Out of Bounds!");
                 }
