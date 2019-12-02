@@ -8,6 +8,7 @@ public class TitleController : MonoBehaviour
 {
     [SerializeField] private Button startButton;
     [SerializeField] private Button instructButton;
+    [SerializeField] private Button quitButton;
 
     [SerializeField] private GameObject instructCanvas;
     [SerializeField] private GameObject titleCanvas;
@@ -16,6 +17,7 @@ public class TitleController : MonoBehaviour
     {
         startButton.onClick.AddListener(startClicked);
         instructButton.onClick.AddListener(instructClicked);
+        quitButton.onClick.AddListener(quitClicked);
     }
 
     // Update is called once per frame
@@ -36,5 +38,10 @@ public class TitleController : MonoBehaviour
         Debug.Log("Instruct Clicked");
         instructCanvas.SetActive(true);
         titleCanvas.SetActive(false);
+    }
+
+    void quitClicked()
+    {
+        Application.Quit();
     }
 }
