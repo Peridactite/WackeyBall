@@ -7,11 +7,14 @@ public class Ball : MonoBehaviour
 {
     [SerializeField] Transform shadow;
     [SerializeField] Transform enemy1;
+    [SerializeField] Transform enemy2;
     [SerializeField] Transform player1;
-    [SerializeField] UIController uiCont;
+
+
     public Rigidbody rb;
     public Vector3 currentVelocity;
     public enemy enemy;
+    public UIController UI;
     private bool playerStart = true;
     private bool playerPoint = false;
     private bool enemyStart = false;
@@ -47,7 +50,7 @@ public class Ball : MonoBehaviour
         }
         else if (enemyStart)
         {
-            transform.position = new Vector3(0, 10, -23);
+            transform.position = new Vector3(-7.5f, 10f, -24f);
         }
 
         if(playerStart && Input.GetKeyDown("space"))
@@ -87,12 +90,12 @@ public class Ball : MonoBehaviour
                     if (teamHit == 1)
                     {
                         enemyPoint = true;
-                        uiCont.AddEnemy();
+                  
                     }
                     else
                     {
                         playerPoint = true;
-                        uiCont.AddPlayer();
+                        
                     }
                     Debug.Log(" Out of Bounds!");
                 }
@@ -160,12 +163,16 @@ public class Ball : MonoBehaviour
         if (enemyPoint)
         {
             team2++;
+            UI.AddEnemy();
+
             enemyPoint = false;
             playerStart = true;
         }
         else if (playerPoint)
         {
             team1++;
+            UI.AddPlayer();
+
             playerPoint = false;
             enemyStart = true;
         }
@@ -174,7 +181,8 @@ public class Ball : MonoBehaviour
         
 
         player1.position = new Vector3(0f,2.5f,25f);
-        enemy1.position = new Vector3(0f, 2.5f, -25f);
+        enemy1.position = new Vector3(-7.5f, 2.5f, -24f);
+        enemy2.position = new Vector3(7.5f, 2.5f, -24f);
 
         doubleHit = false;
         round = false;
