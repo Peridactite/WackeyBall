@@ -5,11 +5,13 @@ using UnityEngine;
 public class enemy : MonoBehaviour
 {
     [SerializeField] private Ball ballFigure;
-    [SerializeField] private Transform trans;
+    [SerializeField] private Transform enemyTrans1;
+    [SerializeField] private Transform enemyTrans2;
     [SerializeField] private Transform playerTrans;
     [SerializeField] private Transform ballTrans;
     private Vector3 destination = Vector3.zero;
     private Vector3 towards = Vector3.zero;
+    private Vector3 teamTowards = Vector3.zero;
     private Vector3[] playerArea = new[] { new Vector3(12f, 0f, 25f), new Vector3(-12f, 0f, 25f), new Vector3(12f, 0f, 10f), new Vector3(-12f, 0f, 10f) };
     private Vector3[] serve = new[] { new Vector3(12f, 0f, 25f), new Vector3(-12f, 0f, 25f) };
     private float distToBall = 0;
@@ -20,6 +22,7 @@ public class enemy : MonoBehaviour
     bool ballHitByPlayer = false;
     bool targetPosition = true;
     bool enemyHitBall = false;
+    bool enemy1Closest = true;
     bool inZone = false;
     float angle = 0;
     
@@ -36,18 +39,38 @@ public class enemy : MonoBehaviour
         //Detect ball hit
         if (ballHitByPlayer)
         {
+            print("Ball hit by player");
             //find landing position
             if (targetPosition)
             {
+                print("finding target position");
                 destination = DetermineBallLand();
                 targetPosition = false;
             }
             //move to land position
-            towards = destination - trans.position;
+            towards = destination - enemyTrans1.position;
+            teamTowards = destination - enemyTrans2.position;
             towards.y = 0;
-            if (towards.magnitude > radius && inZone)
+            teamTowards.y = 0;
+
+            if ((towards.sqrMagnitude) <= (teamTowards.sqrMagnitude)){
+                enemy1Closest = true;
+                print("enemy 1 closest");
+            }
+            else
             {
-                moveEnemy();
+                print("enemy 2 closest");
+                enemy1Closest = false;
+            }
+            if ((towards.magnitude > radius && inZone) && enemy1Closest)
+            {
+                print("Moving enemy 1");
+                moveEnemy(enemyTrans1, towards);
+            }
+            else if((teamTowards.magnitude > radius && inZone) && !enemy1Closest)
+            {
+                print("Moving enemy 2");
+                moveEnemy(enemyTrans2, teamTowards);
             }
             //Hit Ball if in radius of enemy
             distToBall = Vector3.Distance(ballTrans.position, transform.position);
@@ -74,6 +97,7 @@ public class enemy : MonoBehaviour
                 //Debug.Log("Directional Force: " + Force);
                 ballFigure.enemyStrike(Force);
                 ballHitByPlayer = false;
+                targetPosition = true;
             }
         }
 
@@ -114,13 +138,13 @@ public class enemy : MonoBehaviour
         ballHitByPlayer = z;
     }
 
-    private void moveEnemy()
+    private void moveEnemy(Transform transform, Vector3 twd)
     {
-        towards.Normalize();
+        twd.Normalize();
         //multiplies vector by maxSpeed
-        towards *= maxSpeed * Time.deltaTime;
+        twd *= maxSpeed * Time.deltaTime;
         //assigns transform position to position + towards 
-        transform.position = new Vector3(transform.position.x + towards.x, transform.position.y, transform.position.z + towards.z);
+        transform.position = new Vector3(transform.position.x + twd.x, transform.position.y, transform.position.z + twd.z);
         //Debug.Log("Moving to point: " + destination);
     }
    
@@ -193,5 +217,6 @@ public class enemy : MonoBehaviour
         targetPosition = true;
         enemyHitBall = false;
         inZone = false;
+        enemy1Closest = true;
     }
 }

@@ -9,10 +9,13 @@ public class UIController : MonoBehaviour
     [SerializeField] Text ScoreText;
     [SerializeField] Text announcerText;
     [SerializeField] Text timerText;
+    [SerializeField] AudioSource audioSrc;
+    [SerializeField] AudioClip victory, defeat, draw;
 
     [SerializeField] int playerScore = 0;
     [SerializeField] int enemyScore = 0;
     [SerializeField] float timer = 180;
+    [SerializeField] float waitTime = 20.0f;
 
     private bool canCount = true;
     private bool doOnce = false;
@@ -21,7 +24,8 @@ public class UIController : MonoBehaviour
     {
         defaultMessage,
         playerLoss,
-        playerWon
+        playerWon,
+        draw
     }
 
     [SerializeField] announcements currentAnnouncment;
@@ -47,6 +51,9 @@ public class UIController : MonoBehaviour
             case announcements.playerWon:
                 announcerText.text = "You won!!";
                 break;
+            case announcements.draw:
+                announcerText.text = "A Draw";
+                break;
         }
 
         if (timer >= 0.0f && canCount)
@@ -60,8 +67,7 @@ public class UIController : MonoBehaviour
             canCount = false;
             doOnce = true;
             timerText.text = "0:00";
-            currentAnnouncment = announcements.playerWon;
-            SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+            StartCoroutine(Victory());
         }
     }
 
@@ -73,5 +79,32 @@ public class UIController : MonoBehaviour
     public void AddEnemy()
     {
         enemyScore++;
+    }
+
+    private IEnumerator Victory()
+    {
+        if (playerScore > enemyScore)
+        {
+            audioSrc.loop = false;
+            audioSrc.clip = victory;
+            audioSrc.Play();
+            currentAnnouncment = announcements.playerWon;
+        }
+        else if (enemyScore > playerScore)
+        {
+            audioSrc.loop = false;
+            audioSrc.clip = defeat;
+            audioSrc.Play();
+            currentAnnouncment = announcements.playerLoss;
+        }
+        else
+        {
+            audioSrc.loop = false;
+            audioSrc.clip = draw;
+            audioSrc.Play();
+            currentAnnouncment = announcements.draw;
+        }
+        yield return new WaitForSeconds(waitTime);
+        SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }
